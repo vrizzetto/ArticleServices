@@ -25,7 +25,9 @@ public class ArticleController {
     @Autowired
     private ArticleDao articleDao;
 
+    //**GET**
     //Liste tout les articles
+    //----> http://localhost:9090/Articles
     @ApiOperation(value = "Récupère tous les articles en stock!")
     @RequestMapping(value="/Articles", method= RequestMethod.GET)
     public MappingJacksonValue listeArticles(){
@@ -39,7 +41,9 @@ public class ArticleController {
     }
 
 
+    //**GET**
     //Récupérer un article par son Id
+    // ----> http://localhost:9090/Articles/42
     @ApiOperation(value = "Récupère un article grâce à son ID à condition que celui-ci soit en stock!")
     @GetMapping(value="/Articles/{id}")
     public Article afficherUnArticle(@PathVariable int id) {
@@ -52,7 +56,9 @@ public class ArticleController {
 
 
 
+    //**POST**
     //ajouter un article
+    //----> http://localhost:9090/Articles
     @ApiOperation(value = "Ajoute un article au stock")
     @PostMapping(value = "/Articles")
     public ResponseEntity< Void > ajouterArticle (@RequestBody Article article) {
@@ -69,21 +75,27 @@ public class ArticleController {
         return ResponseEntity . created ( location ).build();
     }
 
-    //DELETE
+    //**DELETE**
+    //un article par l'id
+    //----> http://localhost:9090/Articles/1
     @ApiOperation(value = "Supprime un article par l'id")
     @DeleteMapping(value = "/Articles/{id}")
     public void supprimerArticle(@PathVariable int id){
         articleDao.deleteById(id);
     }
 
-    //PUT
+    //**PUT**
+    //MAJ d'un article
+    //----> http://localhost:9090/Articles
     @ApiOperation(value = "Update un article mis à jour")
     @PutMapping (value = "/Articles")
     public void updateArticle(@RequestBody Article article){
         articleDao.save(article);
     }
 
-    //Calcul de marge --------PARTIE 7
+    //**GET**
+    // Calcul de marge
+    // --------PARTIE 7
     @ApiOperation(value = "Calcul la marge entre chaque article")
     @GetMapping(value = "/AdminArticles")
         public MappingJacksonValue calculerMargeArticle(){
@@ -98,7 +110,9 @@ public class ArticleController {
         }
 
 
-    //Tri croisant --------PARTIE 7
+    //**GET**
+    // Retourne la liste de tous les articles par nom croissant
+    // ----> http://localhost:9090/Articles/alpha
     @ApiOperation(value = "Retourne la liste de tous les articles triés par nom croisant")
     @GetMapping(value = "/Articles/alpha")
     public MappingJacksonValue trierArticlesParOrdreAlphabetique(){
@@ -114,11 +128,13 @@ public class ArticleController {
 
 
     // TEST PrixLimit
+
     @GetMapping(value = "/test/articles/{prixLimit}")
     public List<Article> testeDeRequetes(@PathVariable int prixLimit){
         return articleDao.findByPrixGreaterThan(prixLimit);
     }
     // TEST FindByNom
+
     @GetMapping (value = "/test/articles/like/{recherche}" )
     public List<Article> testeDeRequetes ( @PathVariable String recherche) {
         return articleDao.findByNomLike( "%" +recherche+ "%" );
