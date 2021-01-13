@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "77f1e737-963b-49a0-9bef-0f82ddf99bc6",
+		"name": "ArticleService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST - http://localhost:9090/Articles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"nom\": \"Poney en bois cracheur de neige\",\r\n    \"prix\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/Articles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ALL - http://localhost:9090/Articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/Articles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete - http://localhost:9090/Articles/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/Articles/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - http://localhost:9090/Articles",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"nom\": \"Poney en bois cracheur de FUOCO\",\r\n    \"prix\": 145\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/Articles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET BY ID - http://localhost:9090/Articles/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/Articles/42",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles",
+						"42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET TRI Alpha - http://localhost:9090/Articles/alpha",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/Articles/alpha",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"Articles",
+						"alpha"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET marge - http://localhost:9090/AdminArticles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/AdminArticles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"AdminArticles"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

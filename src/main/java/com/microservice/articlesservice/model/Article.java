@@ -10,19 +10,19 @@ import javax.persistence.Id;
 
 @Entity
 //@JsonFilter("monFiltreDynamique")
-public class Article {
+public class Article
+{
     @Id
    // @GeneratedValue
     private int id;
     private String nom;
     private int prix;
-    // infos qu'on veut pas exposer
     private int prixAchat;
 
-    public Article() {
-    }
+    public Article() { }
 
-    public Article(int id, String nom, int prix, int prixAchat) {
+    public Article(int id, String nom, int prix, int prixAchat)
+    {
         this.id = id;
         this.nom = nom;
         this.prix = prix;
@@ -30,7 +30,8 @@ public class Article {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Article{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
