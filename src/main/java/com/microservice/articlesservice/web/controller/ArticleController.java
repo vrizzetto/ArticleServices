@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.microservice.articlesservice.dao.ArticleDao;
 import com.microservice.articlesservice.model.Article;
 import com.microservice.articlesservice.web.exceptions.ArticleIntrouvableException;
+import com.microservice.articlesservice.web.exceptions.ArticlePrixVente;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -44,6 +46,7 @@ public class ArticleController {
         Article article = articleDao.findById(id);
         if(article==null)
             throw new ArticleIntrouvableException("L'article avec l'id : " + id + "est INTROUVABLE");
+
         return article;
     }
 
@@ -52,15 +55,16 @@ public class ArticleController {
     //ajouter un article
     @ApiOperation(value = "Ajoute un article au stock")
     @PostMapping(value = "/Articles")
-    public ResponseEntity< Void > ajouterArticle (@RequestBody
-                                                            Article article) {
-        Article articleAdded = articleDao .save(article);
+    public ResponseEntity< Void > ajouterArticle (@RequestBody Article article) {
+        Article articleAdded = articleDao.save(article);
+        if(articleAdded.getPrix() == 0)
+            throw  new ArticlePrixVente("Attention l'article avec l'id" + articleAdded.getId() + "à un prix de vente égal à 0");
         if ( articleAdded == null )
             return ResponseEntity . noContent ().build();
         URI location = ServletUriComponentsBuilder
                 . fromCurrentRequest ()
                 .path( "/{id}" )
-                .buildAndExpand( articleAdded .getId())
+                .buildAndExpand( articleAdded.getId())
                 .toUri();
         return ResponseEntity . created ( location ).build();
     }
@@ -79,6 +83,36 @@ public class ArticleController {
         articleDao.save(article);
     }
 
+    //Calcul de marge --------PARTIE 7
+    @ApiOperation(value = "Calcul la marge entre chaque article")
+    @GetMapping(value = "/AdminArticles")
+        public MappingJacksonValue calculerMargeArticle(){
+           List<Article> articles =  articleDao.findAll();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+        MappingJacksonValue articlesFiltres = new MappingJacksonValue( articles );
+        articlesFiltres.setFilters( listDeNosFiltres );
+
+        return articlesFiltres ;
+        }
+
+
+    //Tri croisant --------PARTIE 7
+    @ApiOperation(value = "Retourne la liste de tous les articles triés par nom croisant")
+    @GetMapping(value = "/Articles/alpha")
+    public MappingJacksonValue trierArticlesParOrdreAlphabetique(){
+        List<Article> articles = articleDao.findAllByOrderByNom();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+        MappingJacksonValue articlesFiltres = new MappingJacksonValue( articles );
+        articlesFiltres.setFilters( listDeNosFiltres );
+        return articlesFiltres ;
+
+    }
+
+
     // TEST PrixLimit
     @GetMapping(value = "/test/articles/{prixLimit}")
     public List<Article> testeDeRequetes(@PathVariable int prixLimit){
@@ -89,4 +123,6 @@ public class ArticleController {
     public List<Article> testeDeRequetes ( @PathVariable String recherche) {
         return articleDao.findByNomLike( "%" +recherche+ "%" );
     }
+
+
 }
