@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface ArticleDao extends JpaRepository<Article,Integer> {
     public List<Article> findAll();
+    public List<Article> findAllByOrderByNom();
     public Article findById(int id);
     List<Article> findByPrixGreaterThan(int prixLimit);
     List < Article > findByNomLike ( String recherche);
