@@ -8,11 +8,15 @@ import com.microservice.articlesservice.web.exceptions.ArticleIntrouvableExcepti
 import com.microservice.articlesservice.web.exceptions.ArticlePrixVente;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +31,10 @@ public class ArticleController
     @Autowired
     private ArticleDao articleDao;
 
+    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    @Autowired
+    private HttpServletRequest requestContext;
+
     //**GET**
     //Liste tout les articles
     //----> http://localhost:9090/Articles
@@ -40,7 +48,8 @@ public class ArticleController
       FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
       MappingJacksonValue articlesFiltres = new MappingJacksonValue( articles );
       articlesFiltres .setFilters( listDeNosFiltres );
-
+        logger .info("Début d'appel au service Articles pour la requête : " +
+                requestContext.getHeader("req-id"));
       return articlesFiltres ;
     }
 
